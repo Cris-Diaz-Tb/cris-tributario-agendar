@@ -16,11 +16,15 @@ const MIN_LEAD_MS = 15 * 60 * 1000;
 
 export async function GET() {
   const now = new Date();
-  const end = new Date(now.getTime() + RANGE_DAYS * 24 * 60 * 60 * 1000);
+  // Encuadrado arrastra los segundos de `start` a todos los slots (15:00:29) y
+  // omite horarios si no está alineado (verificado contra la API real). Alinear a la hora.
+  const start = new Date(now);
+  start.setUTCMinutes(0, 0, 0);
+  const end = new Date(start.getTime() + RANGE_DAYS * 24 * 60 * 60 * 1000);
 
   try {
     const slots = await getAvailableTimeSlots({
-      start: now.toISOString(),
+      start: start.toISOString(),
       end: end.toISOString(),
     });
 

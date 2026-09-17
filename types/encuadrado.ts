@@ -13,9 +13,12 @@ export interface AvailableTimeSlotsQuery {
 }
 
 export interface TimeSlot {
-  /** ISO-8601 UTC, ej. "2026-06-22T14:00:00Z" */
+  /** ISO-8601, en la API real viene como "2026-09-22T17:00:00+00:00" */
   start: string;
   end: string;
+  /** No documentados; observados en la API real (2026-09-17) */
+  available_vacancy?: number;
+  title?: string;
 }
 
 export type AvailableTimeSlotsResponse = TimeSlot[];
