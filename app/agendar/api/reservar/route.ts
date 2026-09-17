@@ -2,7 +2,11 @@ import { after, NextResponse } from "next/server";
 
 import { createBooking } from "@/lib/encuadrado/client";
 import { isDryRunScenario } from "@/lib/encuadrado/dry-run";
-import { toHttpStatus, toUserFacingError } from "@/lib/encuadrado/errors";
+import {
+  EncuadradoError,
+  toHttpStatus,
+  toUserFacingError,
+} from "@/lib/encuadrado/errors";
 import { env } from "@/lib/env";
 import { logger } from "@/lib/logger";
 import { sendToN8n } from "@/lib/n8n";
@@ -150,9 +154,6 @@ export async function POST(request: Request) {
     logger.warn("config.service_price_missing", { event_id: eventId }, "medium");
   }
 
-  // (b) redirect_url con todo lo que necesitamos recuperar al volver.
-  const redirectUrl = buildReturnUrl(data, eventId, value);
-
   // Solo en dry-run: permitir elegir escenario por header para probar sin reiniciar.
   const scenarioHeader = request.headers.get("x-dry-run-scenario") ?? undefined;
   const dryRunScenario =
@@ -172,6 +173,9 @@ export async function POST(request: Request) {
   }
 
   try {
+    // (b) redirect_url con todo lo que necesitamos recuperar al volver.
+    const redirectUrl = buildReturnUrl(data, eventId, value);
+
     // (c) crear reserva en Encuadrado.
     const booking = await createBooking(
       {
@@ -261,6 +265,16 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (err) {
+    if (!(err instanceof EncuadradoError)) {
+      logger.error(
+        "reservar.unexpected_error",
+        {
+          event_id: eventId,
+          error: err instanceof Error ? err.message : String(err),
+        },
+        "critical",
+      );
+    }
     const userError = toUserFacingError(err, "booking");
     logger.warn("reservar.failed", {
       event_id: eventId,

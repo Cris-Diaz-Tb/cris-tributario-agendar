@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { getAvailableTimeSlots } from "@/lib/encuadrado/client";
-import { toHttpStatus, toUserFacingError } from "@/lib/encuadrado/errors";
+import {
+  EncuadradoError,
+  toHttpStatus,
+  toUserFacingError,
+} from "@/lib/encuadrado/errors";
+import { logger } from "@/lib/logger";
 import type { TimeSlot } from "@/types/encuadrado";
 import type { ApiErrorResponse, HorariosResponse } from "@/types/tracking";
 
@@ -40,6 +45,15 @@ export async function GET() {
       },
     );
   } catch (err) {
+    // Los errores de Encuadrado ya se loguean en el cliente; aquí los inesperados
+    // (ej. variable de entorno faltante).
+    if (!(err instanceof EncuadradoError)) {
+      logger.error(
+        "horarios.unexpected_error",
+        { error: err instanceof Error ? err.message : String(err) },
+        "critical",
+      );
+    }
     const userError = toUserFacingError(err, "slots");
     return NextResponse.json<ApiErrorResponse>(
       { error: userError },
