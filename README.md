@@ -212,8 +212,10 @@ receptor n8n simulado).
 **GET horarios**
 - [x] Llamada real a Encuadrado con key **ficticia** → 401 real `{"error":"UNAUTHORIZED"}`, mapeado a
       mensaje en español (esto reveló la forma real del body de error, ya soportada).
-- [ ] **Llamada real con la API key y `service_uuid` reales** — pendiente: aún no tengo la key
-      (`npm run smoke:horarios`).
+- [x] **Llamada real con la API key y `service_uuid` reales** (2026-09-17, local y en Vercel): 200, 32 slots
+      en 14 días, `X-RateLimit-Reset` en epoch segundos. Hallazgos: si `start` trae segundos, Encuadrado
+      los propaga a los slots y omite horarios → el rango se alinea a la hora exacta. La respuesta incluye
+      `available_vacancy` y `title` (no documentados).
 - [x] Estados de carga, error con reintento y slots agrupados por día en hora de Chile.
 
 **POST reserva (dry-run, sin reservas reales)**
