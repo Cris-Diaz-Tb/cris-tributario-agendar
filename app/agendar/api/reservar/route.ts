@@ -167,6 +167,9 @@ export async function POST(request: Request) {
     booking_date_time: data.booking_date_time,
     has_utms: Object.keys(data.utms).length > 0,
     dry_run: env.dryRun,
+    // valor crudo del entorno, para diagnosticar configuraciones erradas
+    dry_run_raw: process.env.ENCUADRADO_DRY_RUN ?? "(sin definir)",
+    service_price_raw: process.env.SERVICE_PRICE_CLP ?? "(sin definir)",
   });
   if (!data.contactId) {
     logger.warn("reservar.missing_contact_id", { event_id: eventId }, "medium");
