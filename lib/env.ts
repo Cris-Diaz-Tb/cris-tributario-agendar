@@ -53,6 +53,10 @@ export const env = {
   get n8nWebhookUrl(): string | undefined {
     return optional("N8N_WEBHOOK_URL");
   },
+  /** Secreto compartido con n8n; viaja en el header X-CT-Webhook-Secret. Nunca se loguea. */
+  get n8nWebhookSecret(): string | undefined {
+    return optional("N8N_WEBHOOK_SECRET");
+  },
   /**
    * Entero en CLP. Acepta separadores de miles chilenos ("45.000", "45 000")
    * porque Number.parseInt("45.000") daría 45 en silencio.

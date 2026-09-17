@@ -26,10 +26,23 @@ export async function sendToN8n(
     return false;
   }
 
+  const secret = env.n8nWebhookSecret;
+  if (!secret) {
+    logger.warn(
+      "n8n.webhook_secret_missing",
+      { event: payload.event, event_id: payload.event_id },
+      "medium",
+    );
+  }
+
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // Secreto compartido: n8n rechaza la request si no coincide.
+        ...(secret ? { "X-CT-Webhook-Secret": secret } : {}),
+      },
       body: JSON.stringify(payload),
       cache: "no-store",
       signal: AbortSignal.timeout(N8N_TIMEOUT_MS),
@@ -45,6 +58,8 @@ export async function sendToN8n(
     logger.info("n8n.webhook_ok", {
       event: payload.event,
       event_id: payload.event_id,
+      // solo si se envió el header, nunca su valor
+      signed: !!secret,
     });
     return true;
   } catch (err) {

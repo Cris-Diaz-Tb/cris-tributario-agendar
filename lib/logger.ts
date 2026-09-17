@@ -6,11 +6,15 @@ type Severity = "low" | "medium" | "high" | "critical";
 /**
  * Logs estructurados (JSON de una línea) para Vercel Logs.
  * Solo corre en el servidor; nunca se devuelve al navegador.
- * Redacta la API key por si algún objeto la arrastra accidentalmente.
+ * Redacta la API key y el secreto de n8n por si algún objeto los arrastra.
  */
 function redact(line: string): string {
-  const key = process.env.ENCUADRADO_API_KEY?.trim();
-  return key ? line.split(key).join("[REDACTED]") : line;
+  let out = line;
+  for (const name of ["ENCUADRADO_API_KEY", "N8N_WEBHOOK_SECRET"]) {
+    const value = process.env[name]?.trim();
+    if (value) out = out.split(value).join("[REDACTED]");
+  }
+  return out;
 }
 
 function write(
