@@ -24,10 +24,11 @@ export default async function AgendamientoExitosoPage({
   });
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center px-4 py-12">
+    <main className="mx-auto w-full max-w-xl flex-1 px-4 py-10 sm:py-16">
       <ConfirmationClient
         eventId={parsed.eventId ?? null}
         value={parsed.value}
+        slot={parsed.slot}
         conversionConfirmed={conversionConfirmed}
       />
     </main>

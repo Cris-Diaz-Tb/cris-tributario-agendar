@@ -46,25 +46,25 @@ export function SlotPicker({
   return (
     <section
       aria-labelledby="slots-title"
-      className={`rounded-2xl border bg-white p-5 shadow-sm ${
-        highlightError ? "border-red-400" : "border-slate-200"
+      className={`rounded-2xl border bg-surface p-5 sm:p-6 ${
+        highlightError ? "border-red-400/70" : "border-line"
       }`}
     >
-      <h2 id="slots-title" className="text-lg font-semibold text-brand">
+      <h2 id="slots-title" className="font-display text-xl font-bold uppercase tracking-wide text-white">
         1. Elige un horario
       </h2>
-      <p className="mt-1 text-sm text-slate-500">Hora de Chile continental</p>
+      <p className="mt-1 text-sm text-muted">Hora de Chile continental</p>
 
       <div className="mt-4" aria-live="polite" aria-busy={state.status === "loading"}>
         {state.status === "loading" && <SlotsSkeleton />}
 
         {state.status === "error" && (
-          <div className="rounded-xl bg-amber-50 p-4 text-amber-900">
+          <div className="rounded-xl border border-highlight/30 bg-highlight/10 p-4 text-highlight">
             <p>{state.message}</p>
             <button
               type="button"
               onClick={onRetry}
-              className="mt-3 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600"
+              className="mt-3 rounded-[14px] bg-accent px-4 py-2 font-display font-bold text-accent-ink hover:brightness-110"
             >
               Reintentar
             </button>
@@ -72,7 +72,7 @@ export function SlotPicker({
         )}
 
         {state.status === "ready" && days.length === 0 && (
-          <div className="rounded-xl bg-slate-50 p-4 text-slate-700">
+          <div className="rounded-xl bg-surface-2 p-4 text-fg">
             <p className="font-medium">
               No hay horarios disponibles en los próximos 14 días.
             </p>
@@ -83,7 +83,7 @@ export function SlotPicker({
             <button
               type="button"
               onClick={onRetry}
-              className="mt-3 text-sm font-semibold text-brand underline"
+              className="mt-3 text-sm font-semibold text-accent underline"
             >
               Volver a buscar
             </button>
@@ -108,8 +108,8 @@ export function SlotPicker({
                     onClick={() => setActiveDay(d.key)}
                     className={`flex min-w-[4.5rem] shrink-0 flex-col items-center rounded-xl border px-3 py-2 text-sm transition ${
                       isActive
-                        ? "border-brand bg-brand text-white"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-brand"
+                        ? "border-accent bg-accent text-accent-ink"
+                        : "border-line bg-surface-2 text-fg hover:border-accent"
                     }`}
                   >
                     <span className="capitalize">
@@ -139,8 +139,8 @@ export function SlotPicker({
                     onClick={() => onSelect(slot.start)}
                     className={`rounded-lg border px-3 py-2.5 text-sm font-medium transition ${
                       isSelected
-                        ? "border-accent bg-accent text-white"
-                        : "border-slate-200 text-slate-800 hover:border-accent"
+                        ? "border-accent bg-accent font-bold text-accent-ink"
+                        : "border-line bg-surface-2 text-fg hover:border-accent"
                     }`}
                   >
                     {timeLabel(slot.start)}
@@ -160,15 +160,15 @@ function SlotsSkeleton() {
     <div className="animate-pulse" aria-label="Cargando horarios">
       <div className="flex gap-2">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="h-14 w-[4.5rem] rounded-xl bg-slate-100" />
+          <div key={i} className="h-14 w-[4.5rem] rounded-xl bg-surface-2" />
         ))}
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-10 rounded-lg bg-slate-100" />
+          <div key={i} className="h-10 rounded-lg bg-surface-2" />
         ))}
       </div>
-      <p className="mt-3 text-sm text-slate-500">Cargando horarios…</p>
+      <p className="mt-3 text-sm text-muted">Cargando horarios…</p>
     </div>
   );
 }

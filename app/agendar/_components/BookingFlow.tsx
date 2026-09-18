@@ -251,7 +251,7 @@ export function BookingFlow({ attribution, termsUrl }: Props) {
         highlightError={!!slotError}
       />
       {slotError && (
-        <p role="alert" className="-mt-2 text-sm text-red-600">
+        <p role="alert" className="-mt-2 text-sm text-red-300">
           {slotError}
         </p>
       )}
@@ -264,22 +264,22 @@ export function BookingFlow({ attribution, termsUrl }: Props) {
         onChange={handleChange}
       />
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border bg-surface p-5 sm:p-6 border-line">
         {selectedSlot ? (
-          <p className="text-slate-700">
+          <p className="text-muted">
             Horario elegido:{" "}
-            <span className="font-semibold text-brand">
+            <span className="font-semibold text-white">
               {longLabel(selectedSlot)} hrs
             </span>
           </p>
         ) : (
-          <p className="text-slate-500">Aún no eliges un horario.</p>
+          <p className="text-muted">Aún no eliges un horario.</p>
         )}
 
         {formError && (
           <div
             role="alert"
-            className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+            className="mt-4 rounded-xl border border-red-400/40 bg-red-500/10 p-3 text-sm text-red-200"
           >
             {formError}
           </div>
@@ -288,7 +288,7 @@ export function BookingFlow({ attribution, termsUrl }: Props) {
         <button
           type="submit"
           disabled={busy || slotsState.status !== "ready"}
-          className="mt-4 w-full rounded-xl bg-accent px-5 py-3.5 text-base font-semibold text-white shadow-sm transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-4 w-full rounded-[14px] bg-accent px-5 py-3.5 font-display text-xl font-extrabold text-accent-ink transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {submit.status === "submitting"
             ? "Reservando tu horario…"
@@ -298,13 +298,13 @@ export function BookingFlow({ attribution, termsUrl }: Props) {
         </button>
 
         {submit.status === "redirecting" && submit.expiresAt && (
-          <p className="mt-3 text-center text-sm text-slate-600">
+          <p className="mt-3 text-center text-sm text-muted">
             Tu horario quedó reservado temporalmente hasta las{" "}
             {timeLabel(submit.expiresAt)} hrs. Completa el pago para confirmarlo.
           </p>
         )}
         {submit.status === "idle" && (
-          <p className="mt-3 text-center text-xs text-slate-500">
+          <p className="mt-3 text-center text-xs text-muted">
             Serás redirigido a Encuadrado para completar el pago de forma segura.
           </p>
         )}

@@ -1,3 +1,4 @@
+import { parseSlot } from "@/lib/service";
 import { UTM_KEYS, type AttributionContext, type Utms } from "@/types/tracking";
 
 const MAX_PARAM_LENGTH = 500;
@@ -56,6 +57,7 @@ export function parseReturnParams(params: RawParams) {
     utms: attribution.utms,
     fbclid: attribution.fbclid,
     value: Number.isFinite(value) && value >= 0 ? value : null,
+    slot: parseSlot(read(params, "slot")),
   };
 }
 

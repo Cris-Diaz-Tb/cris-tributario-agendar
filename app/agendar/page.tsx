@@ -10,13 +10,14 @@ export default async function AgendarPage({
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-8 sm:py-12">
       <header className="mb-8">
-        <p className="text-sm font-semibold uppercase tracking-wide text-accent">
-          Cris Tributario
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
+          ● Cris Tributario · Asesoría 1 a 1
         </p>
-        <h1 className="mt-2 text-2xl font-bold text-brand sm:text-3xl">
-          Agenda tu asesoría tributaria inmobiliaria
+        <h1 className="mt-3 font-display text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+          Agenda tu asesoría{" "}
+          <span className="italic text-accent">tributaria</span> inmobiliaria
         </h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-3 text-muted">
           Elige el horario que más te acomode, completa tus datos y confirma
           tu reserva con el pago.
         </p>

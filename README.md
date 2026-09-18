@@ -12,7 +12,7 @@ GHL form ──► cristributario.cl/agendar?contactId&utm_*&fbclid
               │                              └► n8n  booking_initiated   (server-side, siempre)
               │  Pixel InitiateCheckout (eventID = event_id)
               ▼
-         Encuadrado (pago) ──redirect──► cristributario.cl/agendamiento-exitoso?ref&event_id&utm_*&fbclid&value
+         Encuadrado (pago) ──redirect──► cristributario.cl/agendamiento-exitoso?ref&event_id&utm_*&fbclid&value&slot
               │  log server-side de TODOS los query params
               │  Pixel Schedule + Purchase (solo si CONVERSION_EVENTS_ENABLED)
               └► POST /agendar/api/notificar-conversion ──► n8n  booking_return
@@ -32,13 +32,16 @@ app/
     api/notificar-conversion/route.ts POST reenvía retorno a n8n
   agendamiento-exitoso/
     page.tsx                         Server: loguea query params, decide conversion_confirmed
-    ConfirmationClient.tsx           Pixel + fire-and-forget a n8n, dedupe por sessionStorage
+    ConfirmationClient.tsx           Fecha, calendario, "Qué sigue"; Pixel + n8n, dedupe por sessionStorage
+    calendario/route.ts              GET ?slot=ISO → descarga .ics (Apple / Outlook)
 lib/
   env.ts                             variables server-only (lectura perezosa)
   encuadrado/client.ts               fetch con X-API-Key, 429 backoff, log de rate limit
   encuadrado/errors.ts               código Encuadrado → mensaje en español
   encuadrado/dry-run.ts              respuestas simuladas
   conversion.ts                      isPaymentConfirmed (flag + PAYMENT_SUCCESS_PARAM)
+  service.ts                         título, duración (60 min) y pasos "Qué sigue" (BORRADOR a confirmar con Cris)
+  calendar.ts                        link de Google Calendar y generador .ics
   n8n.ts · logger.ts · meta-pixel.ts · routes.ts · tracking/params.ts
 types/encuadrado.ts · types/tracking.ts
 scripts/smoke-horarios.mts           GET real a Encuadrado (solo lectura)

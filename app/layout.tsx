@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+// Mismas familias que la landing de cristributario.cl
+const barlow = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -15,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f2a44",
+  themeColor: "#0d141f",
 };
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim();
@@ -26,7 +33,10 @@ const gtmEnabled = !!GTM_ID && /^GTM-[A-Z0-9]+$/.test(GTM_ID);
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es-CL" className={`${inter.variable} h-full antialiased`}>
+    <html
+      lang="es-CL"
+      className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col">
         {gtmEnabled ? (
           <>

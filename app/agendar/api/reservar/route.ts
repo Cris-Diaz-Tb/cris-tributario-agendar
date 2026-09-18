@@ -130,6 +130,10 @@ function buildReturnUrl(
   set("utm_term", data.utms.utm_term);
   set("fbclid", data.fbclid);
   url.searchParams.set("value", String(value));
+  // Horario elegido: la página de gracias lo muestra y arma el evento de calendario.
+  // Normalizado a UTC con "Z": un "+00:00" podría llegar como espacio si el
+  // redirect de Encuadrado re-codifica la URL.
+  url.searchParams.set("slot", new Date(data.booking_date_time).toISOString());
   return url.toString();
 }
 
