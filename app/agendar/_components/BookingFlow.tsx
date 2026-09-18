@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { pushDataLayer } from "@/lib/datalayer";
 import { trackMetaEvent } from "@/lib/meta-pixel";
 import { API_ROUTES } from "@/lib/routes";
 import type {
@@ -132,6 +133,7 @@ export function BookingFlow({ attribution, termsUrl }: Props) {
   }, [loadSlots]);
 
   const handleSelectSlot = (start: string) => {
+    pushDataLayer("ct_horario_seleccionado", { booking_date_time: start });
     setSelectedSlot(start);
     setSlotError(undefined);
     setFormError(undefined);
@@ -191,6 +193,11 @@ export function BookingFlow({ attribution, termsUrl }: Props) {
 
       if (json.kind === "payment_required") {
         setSubmit({ status: "redirecting", expiresAt: json.expires_at });
+        pushDataLayer("ct_reserva_iniciada", {
+          event_id: json.event_id,
+          value: json.value,
+          currency: "CLP",
+        });
         trackMetaEvent(
           "InitiateCheckout",
           {

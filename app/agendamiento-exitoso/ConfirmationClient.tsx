@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 
+import { pushDataLayer } from "@/lib/datalayer";
 import { readCookie, trackMetaEvent } from "@/lib/meta-pixel";
 import { API_ROUTES } from "@/lib/routes";
 
@@ -54,6 +55,13 @@ export function ConfirmationClient({ eventId, value, conversionConfirmed }: Prop
     const timer = setTimeout(() => {
       if (alreadySent(dedupeKey)) return;
       markSent(dedupeKey);
+
+      pushDataLayer("ct_retorno_pago", {
+        event_id: eventId,
+        value: value,
+        currency: "CLP",
+        conversion_confirmed: conversionConfirmed,
+      });
 
       // 1) Pixel en el navegador — SOLO si el servidor confirmó la conversión.
       if (conversionConfirmed && eventId) {
