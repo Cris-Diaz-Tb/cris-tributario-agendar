@@ -228,6 +228,11 @@ export async function POST(request: Request) {
       occurred_at: new Date().toISOString(),
       event_id: eventId,
       contactId: data.contactId ?? null,
+      lead: {
+        full_name: data.full_name,
+        email: data.email,
+        phone: `+56${data.phone}`,
+      },
       utms: data.utms,
       fbclid: data.fbclid ?? null,
       booking_date_time: data.booking_date_time,

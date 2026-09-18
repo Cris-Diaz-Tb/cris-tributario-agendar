@@ -69,6 +69,16 @@ export interface BookingInitiatedPayload {
   occurred_at: string;
   event_id: string;
   contactId: string | null;
+  /**
+   * Datos del formulario de /agendar. Permiten que n8n identifique al contacto
+   * en GHL (upsert por email/teléfono) aunque `contactId` venga null.
+   */
+  lead: {
+    full_name: string;
+    email: string;
+    /** E.164, ej. "+56987654321" */
+    phone: string;
+  };
   utms: Utms;
   fbclid: string | null;
   booking_date_time: string;

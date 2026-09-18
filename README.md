@@ -140,6 +140,7 @@ Ambos eventos llegan al mismo `N8N_WEBHOOK_URL`; distínguelos por `event`.
   "occurred_at": "2026-09-17T16:24:45.957Z",
   "event_id": "booking_1235a08c-...",
   "contactId": "ghl_abc123",
+  "lead": { "full_name": "Juan Pérez", "email": "juan@example.cl", "phone": "+56987654321" },
   "utms": { "utm_source": "meta", "utm_medium": "paid", "utm_campaign": "...", "utm_content": "...", "utm_term": "..." },
   "fbclid": "IwAR123",
   "booking_date_time": "2026-09-18T14:00:00Z",
@@ -154,6 +155,10 @@ Ambos eventos llegan al mismo `N8N_WEBHOOK_URL`; distínguelos por `event`.
 ```
 
 `redirect_url_accepted: false` → el usuario no volverá a nuestra página: esa conversión solo existe aquí.
+
+`contactId` puede venir `null` si el lead llegó a `/agendar` sin el parámetro. En ese caso n8n debe
+identificar al contacto con `lead.email` / `lead.phone` (upsert en GHL) y **actualizar** su oportunidad
+existente en el pipeline, no crear una nueva.
 
 ### `booking_return` — desde `/agendar/api/notificar-conversion`
 
