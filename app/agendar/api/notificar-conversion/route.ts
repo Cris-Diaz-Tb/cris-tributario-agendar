@@ -72,9 +72,12 @@ export async function POST(request: Request) {
   };
 
   if (!payload.event_id) {
+    // Visita a /agendamiento-exitoso sin venir de una reserva (URL abierta a mano,
+    // bots, extensiones). No se reenvía: sería un evento vacío para n8n.
     logger.warn("notificar.missing_event_id", {
       raw_query_params: rawQueryParams,
     });
+    return NextResponse.json({ ok: false, skipped: true }, { status: 202 });
   }
 
   const ok = await sendToN8n(payload);
